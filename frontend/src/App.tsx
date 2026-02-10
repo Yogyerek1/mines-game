@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
 
@@ -11,8 +11,12 @@ interface UserData {
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
+    if (hasInitialized.current) return; // skip if already called
+    hasInitialized.current = true; // mark as called
+
     fetch(`${BACKEND_URL}/users/init`, {
       method: "POST",
       credentials: "include", // include cookies
