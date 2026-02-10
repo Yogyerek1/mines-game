@@ -16,3 +16,11 @@ SETTINGS:
 -> ALTER USER 'root'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'password';
 -> FLUSH PRIVILEGES;
 create database -> CREATE DATABASe `mines-game-db`;
+
+CREATE TABLES:
+CREATE TABLE users (
+    accountID VARCHAR(36) PRIMARY KEY NOT NULL,
+    username VARCHAR(20) DEFAULT NULL,
+    score INT DEFAULT 0,
+    profileURL VARCHAR(100) DEFAULT NULL
+);
