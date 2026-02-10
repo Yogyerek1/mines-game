@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import cors from "cors";
 import { db } from "./database/db";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
@@ -6,6 +7,11 @@ import { UpdateRequestBodyType } from "./types/types";
 
 const port = 8000;
 const app: Express = express();
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 
 app.use(cookieParser());
 app.use(express.json());

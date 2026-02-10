@@ -16,6 +16,7 @@
     "@types/node": "^25.2.2",
     "@types/uuid": "^10.0.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "mysql2": "^3.16.3",
@@ -23,6 +24,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "nodemon": "^3.1.11"
   }
 }
