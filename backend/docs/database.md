@@ -15,7 +15,7 @@ SETTINGS:
 -> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 -> ALTER USER 'root'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'password';
 -> FLUSH PRIVILEGES;
-create database -> CREATE DATABASe `mines-game-db`;
+create database -> CREATE DATABASE `mines-game-db`;
 
 CREATE TABLES:
 CREATE TABLE users (

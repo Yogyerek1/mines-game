@@ -12,6 +12,16 @@ app.use(express.json());
 
 app.post("/users/init", (req: Request, res: Response) => {
     let accountID = req.cookies.accountID;
+    const setCookieAndRespond = (id: string) => {
+        res.cookie("accountID", id, {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        });
+        return res.json({ username_set: false });
+    };
+
     if (!accountID) {
         accountID = uuidv4();
         db.execute(
@@ -22,13 +32,38 @@ app.post("/users/init", (req: Request, res: Response) => {
                     console.error("DB error:", err);
                     return res.status(500).json({ error: "DB error" });
                 }
-                res.cookie("accountID", accountID, { httpOnly: true, sameSite: "lax" });
-                return res.json({ accountID, username_set: false });
+                setCookieAndRespond(accountID);
             }
         );
         return;
     }
-    res.json({ accountID, username_set: false });
+
+    db.execute(
+        "SELECT accountID FROM users WHERE accountID = ?",
+        [accountID],
+        (err, results: any) => {
+            if (err) {
+                console.error("DB error:", err);
+                return res.status(500).json({ error: "DB error" });
+            }
+            if (!results || results.length === 0) {
+                const newID = uuidv4();
+                db.execute(
+                    "INSERT INTO users (accountID) VALUES (?)",
+                    [newID],
+                    (err2) => {
+                        if (err2) {
+                            console.error("DB error:", err2);
+                            return res.status(500).json({ error: "DB error" });
+                        }
+                        setCookieAndRespond(newID);
+                    }
+                );
+            } else {
+                setCookieAndRespond(accountID);
+            }
+        }
+    );
 });
 
 app.post("/users/update", (req: Request, res: Response) => {

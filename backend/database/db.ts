@@ -1,4 +1,4 @@
-import mysql, { Connection } from "mysql2";
+import mysql, { Pool } from "mysql2";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -8,20 +8,16 @@ const password = process.env.DB_PASS || "";
 const database = process.env.DB_NAME || "mines-game-db";
 
 
-export const db: Connection = mysql.createConnection({
+
+export const db: Pool = mysql.createPool({
   host,
   user,
   password,
   database,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
   connectTimeout: 5000
 });
 
-console.log("Connecting to MySQL with config:", { host, user, password, database });
-db.connect((err) => {
-  console.log("Connect callback futott!");
-  if (err) {
-    console.error("MySQL connection error:", err);
-  } else {
-    console.log("Connected to MySQL database!");
-  }
-});
+console.log("MySQL pool created, ready for connections.");
