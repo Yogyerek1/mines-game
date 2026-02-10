@@ -4,12 +4,13 @@ import { db } from "./database/db";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import { UpdateRequestBodyType } from "./types/types";
+import { frontend_url } from "./config";
 
 const port = 8000;
 const app: Express = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: frontend_url,
     credentials: true
 }));
 

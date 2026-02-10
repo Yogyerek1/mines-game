@@ -1,0 +1,1 @@
+export const frontend_url: string = "http://localhost:5173";
