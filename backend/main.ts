@@ -12,14 +12,18 @@ app.use(express.json());
 
 app.post("/users/init", (req: Request, res: Response) => {
     let accountID = req.cookies.accountID;
-    const setCookieAndRespond = (id: string) => {
+    const setCookieAndRespond = (id: string, userData?: { username?: string, score?: number, profileURL?: string }) => {
         res.cookie("accountID", id, {
             httpOnly: true,
             sameSite: "lax",
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 7
         });
-        return res.json({ username_set: false });
+        if (userData) {
+            return res.json({ ...userData });
+        } else {
+            return res.json({});
+        }
     };
 
     if (!accountID) {
@@ -32,16 +36,16 @@ app.post("/users/init", (req: Request, res: Response) => {
                     console.error("DB error:", err);
                     return res.status(500).json({ error: "DB error" });
                 }
-                setCookieAndRespond(accountID);
+                setCookieAndRespond(accountID, {});
             }
         );
         return;
     }
 
-    db.execute(
-        "SELECT accountID FROM users WHERE accountID = ?",
+    db.query(
+        "SELECT username, score, profileURL FROM users WHERE accountID = ?",
         [accountID],
-        (err, results: any) => {
+        (err, results: any[]) => {
             if (err) {
                 console.error("DB error:", err);
                 return res.status(500).json({ error: "DB error" });
@@ -56,11 +60,12 @@ app.post("/users/init", (req: Request, res: Response) => {
                             console.error("DB error:", err2);
                             return res.status(500).json({ error: "DB error" });
                         }
-                        setCookieAndRespond(newID);
+                        setCookieAndRespond(newID, {});
                     }
                 );
             } else {
-                setCookieAndRespond(accountID);
+                const { username, score, profileURL } = results[0];
+                setCookieAndRespond(accountID, { username, score, profileURL });
             }
         }
     );
@@ -100,6 +105,45 @@ app.post("/users/update", (req: Request, res: Response) => {
                 return res.status(500).json({ success: false, error: "DB error" });
             }
             res.json({ success: true, updated: updates });
+        }
+    );
+});
+
+
+app.get("/toplist", (req: Request, res: Response) => {
+    const accountID = req.cookies.accountID;
+    db.query(
+        "SELECT username, score, profileURL FROM users WHERE username IS NOT NULL AND username != '' ORDER BY score DESC LIMIT 10",
+        (err, results: any[]) => {
+            if (err) {
+                console.error("DB error:", err);
+                return res.status(500).json({ error: "DB error" });
+            }
+            if (accountID) {
+                db.query(
+                    "SELECT username, score, profileURL FROM users WHERE accountID = ?",
+                    [accountID],
+                    (err2, selfResults: any[]) => {
+                        if (err2) {
+                            console.error("DB error:", err2);
+                            return res.status(500).json({ error: "DB error" });
+                        }
+                        let toplist = results || [];
+                        if (selfResults && selfResults.length > 0) {
+                            const selfUser = selfResults[0];
+                            const isInTop = toplist.some(
+                                (item) => item.username === selfUser.username && item.score === selfUser.score && item.profileURL === selfUser.profileURL
+                            );
+                            if (!isInTop) {
+                                toplist = [...toplist, { ...selfUser, self: true }];
+                            }
+                        }
+                        return res.json({ toplist });
+                    }
+                );
+            } else {
+                return res.json({ toplist: results });
+            }
         }
     );
 });
