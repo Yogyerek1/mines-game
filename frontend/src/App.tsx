@@ -41,7 +41,7 @@ function App() {
   }
 
   if (!userData?.username) {
-    return <UsernameSetup />
+    return <UsernameSetup onSetUsername={(username)=>{console.log("Username:",username)}} /> 
   }
 
   return (
