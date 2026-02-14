@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
+import { UsernameSetup } from "./components/UsernameSetup";
 
 interface UserData {
   username?: string;
@@ -51,12 +52,6 @@ function App() {
   )
 }
 
-function UsernameSetup() { // just to pass error and see it is working
-  return (
-    <div>
-      <h1>Set username...</h1>
-    </div>
-  )
-}
+
 
 export default App;
