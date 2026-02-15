@@ -3,11 +3,13 @@ import "./App.css";
 import { BACKEND_URL } from "./config";
 import { ProfileSetup } from "./components/ProfileSetup";
 import { ProfileIMG } from "./components/profile/ProfileIMG";
+import { Button } from "./components/ui-interactive/Button";
 import { type UserData } from "./types/types";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState<boolean>(false);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ function App() {
       });
   }, []);
 
-  const handleSetUsername = async (username: string, profileURL: string) => {
+  const handleSetData = async (username: string, profileURL: string) => {
     try {
       const response = await fetch(`${BACKEND_URL}/users/update`, {
         method: "POST",
@@ -61,7 +63,20 @@ function App() {
   }
 
   if (!userData?.username) {
-    return <ProfileSetup onSetData={handleSetUsername} />;
+    return <ProfileSetup onSetData={handleSetData} />;
+  }
+
+  if (editMode && userData) {
+    return (
+      <ProfileSetup
+        onSetData={(username, profileURL) => {
+          handleSetData(username, profileURL);
+          setEditMode(false);
+        }}
+        initialUsername={userData.username}
+        initialProfileURL={userData.profileURL}
+      />
+    );
   }
 
   return (
@@ -77,6 +92,9 @@ function App() {
       <br />
       <p>Score: {userData.score}</p>
       <br />
+      <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
+        Edit
+      </Button>
     </div>
   );
 }

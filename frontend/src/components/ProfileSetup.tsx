@@ -5,12 +5,19 @@ import { Button } from "./ui-interactive/Button";
 
 type ProfileSetupProps = {
   onSetData: (username: string, profileURL: string) => void;
+  initialUsername?: string;
+  initialProfileURL?: string;
 };
 
-export function ProfileSetup({ onSetData }: ProfileSetupProps) {
-  const [username, setUsername] = useState("");
+export function ProfileSetup({
+  onSetData,
+  initialUsername = "",
+  initialProfileURL,
+}: ProfileSetupProps) {
+  const [username, setUsername] = useState(initialUsername);
   const [profileURL, setProfileURL] = useState<string>(
-    `https://api.dicebear.com/7.x/avataaars/svg?seed=${uuidv4()}`,
+    initialProfileURL ||
+      `https://api.dicebear.com/7.x/avataaars/svg?seed=${uuidv4()}`,
   );
   const handleClick = () => {
     onSetData(username, profileURL);
@@ -37,6 +44,7 @@ export function ProfileSetup({ onSetData }: ProfileSetupProps) {
               type="text"
               className="flex-1 border-3 border-black rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition duration-200 bg-amber-100 text-black placeholder-gray-600"
               placeholder="Add username"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <Button
