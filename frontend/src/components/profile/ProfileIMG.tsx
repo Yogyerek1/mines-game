@@ -15,7 +15,7 @@ export function ProfileIMG({
   width = "w-15",
   height = "h-15",
   round,
-  border,
+  border = "border-1 border-yellow-600",
   onClick,
   className,
 }: profileIMGProps) {

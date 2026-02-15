@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
-import { UsernameSetup } from "./components/UsernameSetup";
+import { ProfileSetup } from "./components/ProfileSetup";
 import { ProfileIMG } from "./components/profile/ProfileIMG";
 import { type UserData } from "./types/types";
 
@@ -47,7 +47,7 @@ function App() {
 
       if (data.success) {
         console.log("Username updated:", data);
-        setUserData({ ...userData, username });
+        setUserData({ ...userData, username, profileURL });
       } else {
         console.error("Update failed", data.message);
       }
@@ -61,7 +61,7 @@ function App() {
   }
 
   if (!userData?.username) {
-    return <UsernameSetup onSetUsername={handleSetUsername} />;
+    return <ProfileSetup onSetData={handleSetUsername} />;
   }
 
   return (
@@ -70,7 +70,6 @@ function App() {
         src={userData.profileURL}
         width="w-35"
         height="h-35"
-        border="border-1 border-yellow-600"
         round="rounded-lg"
         className="mx-auto mb-5"
       />
