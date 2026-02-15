@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
 import { ProfileSetup } from "./components/ProfileSetup";
-import { ProfileIMG } from "./components/profile/ProfileIMG";
-import { Button } from "./components/ui-interactive/Button";
+//import { ProfileIMG } from "./components/profile/ProfileIMG";
+//import { Button } from "./components/ui-interactive/Button";
 import { type UserData } from "./types/types";
+import { Container } from "./components/Container";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -79,24 +80,35 @@ function App() {
     );
   }
 
-  return (
-    <div>
-      <ProfileIMG
-        src={userData.profileURL}
-        width="w-35"
-        height="h-35"
-        round="rounded-lg"
-        className="mx-auto mb-5"
-      />
-      <h1>Hello, {userData.username}!</h1>
-      <br />
-      <p>Score: {userData.score}</p>
-      <br />
-      <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
-        Edit
-      </Button>
-    </div>
-  );
+  if (userData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#181c2b]">
+        <Container>
+          {/*
+            <div className="w-full flex flex-col items-center justify-center">
+              <ProfileIMG
+                src={userData.profileURL}
+                width="w-35"
+                height="h-35"
+                round="rounded-lg"
+                className="mx-auto mb-5"
+              />
+              <h1>Hello, {userData.username}!</h1>
+              <br />
+              <p>Score: {userData.score}</p>
+              <br />
+              <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
+                Edit
+              </Button>
+            </div>
+          */}
+          <div className="h-100 w-100 bg-red-500">Game data...</div>
+          <div className="h-100 w-100 bg-blue-500">Game...</div>
+          <div className="h-100 w-100 bg-green-500">Toplist...</div>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
