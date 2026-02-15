@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ProfileIMG } from "./profile/ProfileIMG";
+import { v4 as uuidv4 } from "uuid";
 
 interface UsernameSetupProps {
   onSetUsername: (username: string) => void;
@@ -7,6 +8,9 @@ interface UsernameSetupProps {
 
 export function UsernameSetup({ onSetUsername }: UsernameSetupProps) {
   const [username, setUsername] = useState("");
+  const [profileURL, setProfileURL] = useState<string>(
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${uuidv4()}`,
+  );
   const handleClick = () => {
     onSetUsername(username);
   };
@@ -20,9 +24,14 @@ export function UsernameSetup({ onSetUsername }: UsernameSetupProps) {
         <div className="flex items-center justify-center p-4 border border-emerald-700 rounded-lg bg-[#333333]">
           <div className="flex items-center space-x-2 w-full max-w-md">
             <ProfileIMG
-              src="https://avatars.githubusercontent.com/u/184096109?s=400&u=9ed184694b74b106c6fd924f0c7a805de875fa5b&v=4"
+              src={profileURL}
               round="rounded-lg"
-              border="border-1 border-blue-500"
+              border="border-1 border-yellow-600"
+              onClick={() => {
+                setProfileURL(
+                  `https://api.dicebear.com/7.x/avataaars/svg?seed=${uuidv4()}`,
+                );
+              }}
             />
             <input
               type="text"
