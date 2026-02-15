@@ -4,6 +4,7 @@ type profileIMGProps = {
   width?: string;
   height?: string;
   round?: string;
+  border?: string;
 };
 
 export function ProfileIMG({
@@ -12,6 +13,13 @@ export function ProfileIMG({
   width = "w-15",
   height = "h-15",
   round,
+  border,
 }: profileIMGProps) {
-  return <img src={src} alt={alt} className={`${width} ${height} ${round}`} />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={`${width} ${height} ${round} ${border}`}
+    />
+  );
 }
