@@ -3,12 +3,7 @@ import "./App.css";
 import { BACKEND_URL } from "./config";
 import { UsernameSetup } from "./components/UsernameSetup";
 import { ProfileIMG } from "./components/profile/ProfileIMG";
-
-interface UserData {
-  username?: string;
-  score?: number;
-  profileURL?: string;
-}
+import { type UserData } from "./types/types";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
