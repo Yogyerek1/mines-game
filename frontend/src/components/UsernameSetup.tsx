@@ -3,7 +3,7 @@ import { ProfileIMG } from "./profile/ProfileIMG";
 import { v4 as uuidv4 } from "uuid";
 
 interface UsernameSetupProps {
-  onSetUsername: (username: string) => void;
+  onSetUsername: (username: string, profileURL: string) => void;
 }
 
 export function UsernameSetup({ onSetUsername }: UsernameSetupProps) {
@@ -12,7 +12,7 @@ export function UsernameSetup({ onSetUsername }: UsernameSetupProps) {
     `https://api.dicebear.com/7.x/avataaars/svg?seed=${uuidv4()}`,
   );
   const handleClick = () => {
-    onSetUsername(username);
+    onSetUsername(username, profileURL);
   };
 
   return (

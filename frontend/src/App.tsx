@@ -36,7 +36,7 @@ function App() {
       });
   }, []);
 
-  const handleSetUsername = async (username: string) => {
+  const handleSetUsername = async (username: string, profileURL: string) => {
     try {
       const response = await fetch(`${BACKEND_URL}/users/update`, {
         method: "POST",
@@ -44,7 +44,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username, profileURL }),
       });
 
       const data = await response.json();
@@ -65,11 +65,7 @@ function App() {
   }
 
   if (!userData?.username) {
-    return (
-      <UsernameSetup
-        onSetUsername={handleSetUsername}
-      />
-    );
+    return <UsernameSetup onSetUsername={handleSetUsername} />;
   }
 
   return (
