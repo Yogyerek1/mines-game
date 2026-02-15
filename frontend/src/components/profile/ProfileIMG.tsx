@@ -1,11 +1,12 @@
 type profileIMGProps = {
-  src: string;
+  src: string | undefined;
   alt?: string;
   width?: string;
   height?: string;
   round?: string;
   border?: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
+  className?: string;
 };
 
 export function ProfileIMG({
@@ -16,12 +17,13 @@ export function ProfileIMG({
   round,
   border,
   onClick,
+  className,
 }: profileIMGProps) {
   return (
     <img
       src={src}
       alt={alt}
-      className={`${width} ${height} ${round} ${border}`}
+      className={`${width} ${height} ${round} ${border} ${className}`}
       onClick={onClick}
     />
   );

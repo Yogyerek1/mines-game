@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
 import { UsernameSetup } from "./components/UsernameSetup";
+import { ProfileIMG } from "./components/profile/ProfileIMG";
 
 interface UserData {
   username?: string;
@@ -70,6 +71,14 @@ function App() {
 
   return (
     <div>
+      <ProfileIMG
+        src={userData.profileURL}
+        width="w-35"
+        height="h-35"
+        border="border-1 border-yellow-600"
+        round="rounded-lg"
+        className="mx-auto mb-5"
+      />
       <h1>Hello, {userData.username}!</h1>
       <br />
       <p>Score: {userData.score}</p>
