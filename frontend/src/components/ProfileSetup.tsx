@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ProfileIMG } from "./profile/ProfileIMG";
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "./ui-interactive/Button";
 
 type ProfileSetupProps = {
   onSetData: (username: string, profileURL: string) => void;
@@ -38,12 +39,12 @@ export function ProfileSetup({ onSetData }: ProfileSetupProps) {
               placeholder="Add username"
               onChange={(e) => setUsername(e.target.value)}
             />
-            <button
+            <Button
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-200 whitespace-nowrap"
               onClick={handleClick}
             >
               Set
-            </button>
+            </Button>
           </div>
         </div>
       </div>
