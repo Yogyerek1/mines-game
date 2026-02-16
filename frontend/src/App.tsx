@@ -6,7 +6,6 @@ import { ProfileSetup } from "./components/ProfileSetup";
 //import { Button } from "./components/ui-interactive/Button";
 import { type UserData } from "./types/types";
 import { Container } from "./components/Container";
-import { Toplist } from "./components/Toplist";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -105,9 +104,7 @@ function App() {
           */}
           <div className="h-100 w-100 bg-red-500">Game data...</div>
           <div className="h-100 w-100 bg-blue-500">Game...</div>
-          <div className="h-100 w-100">
-            <Toplist myUser={userData} />
-          </div>
+          <div className="h-100 w-100 bg-green-500">Toplist...</div>
         </Container>
       </div>
     );
