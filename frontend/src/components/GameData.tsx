@@ -1,8 +1,15 @@
 import { GameDataRepository } from "../repositories/GameDataRepositoy";
 import { minBombs, maxBombs } from "../config";
+import { useState } from "react";
 
 export function GameData() {
   const gameDataService: GameDataRepository = new GameDataRepository();
+
+  const [bombs, setBombs] = useState(gameDataService.getBombs);
+
+  const handleBombChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBombs(Number(e.target.value));
+  };
 
   return (
     <>
@@ -20,11 +27,11 @@ export function GameData() {
 
           <div className="flex justify-between w-full mb-2.5 px-1">
             <span className="text-white">BOMBS ({minBombs} - {maxBombs}):</span>
-            <span className="text-white">5</span>
+            <span className="text-white">{bombs}</span>
           </div>
 
           <input
-            type="range"
+            type="range" min={minBombs} max={maxBombs} value={bombs} onChange={handleBombChange}
             className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
           />
         </div>
