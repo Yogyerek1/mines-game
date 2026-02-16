@@ -6,6 +6,7 @@ import { ProfileSetup } from "./components/ProfileSetup";
 //import { Button } from "./components/ui-interactive/Button";
 import { type UserData } from "./types/types";
 import { Container } from "./components/Container";
+import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
 
 function App() {
@@ -103,6 +104,9 @@ function App() {
               </Button>
             </div>
           */}
+          <div className="h-100 w-100 bg-red-500">Game data...</div>
+          <div className="h-96 w-96"><Game></Game></div>
+          <div className="h-100 w-100 bg-green-500">Toplist...</div>
           <div className="h-96 w-96"><GameData></GameData></div>
           <div className="h-96 w-96 bg-blue-500">Game...</div>
           <div className="h-96 w-96 bg-green-500">Toplist...</div>
