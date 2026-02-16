@@ -105,9 +105,15 @@ function App() {
               </Button>
             </div>
           */}
-          <div className="h-96 w-96"><GameData></GameData></div>
-          <div className="h-96 w-96"><Game></Game></div>
-          <div className="h-96 w-96"><Toplist myUser={userData} /></div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <GameData></GameData>
+          </div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <Game></Game>
+          </div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <Toplist myUser={userData} />
+          </div>
         </Container>
       </div>
     );
