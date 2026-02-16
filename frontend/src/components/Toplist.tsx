@@ -31,7 +31,7 @@ export function Toplist({ myUser }: ToplistProps) {
   if (loading) return <div>Loading toplist...</div>;
 
   return (
-    <div className="bg-[#181c23] border border-[#23283a] rounded-2xl w-96 py-4 shadow-lg">
+    <div className="bg-[#181c23] border border-[#23283a] rounded-2xl w-full py-4 shadow-lg">
       <h1 className="text-white text-center text-lg font-bold mb-2">
         LEADERBOARD
       </h1>
