@@ -106,7 +106,7 @@ function App() {
           <div className="h-100 w-100 bg-red-500">Game data...</div>
           <div className="h-100 w-100 bg-blue-500">Game...</div>
           <div className="h-100 w-100">
-            <Toplist />
+            <Toplist myUser={userData} />
           </div>
         </Container>
       </div>
