@@ -85,7 +85,7 @@ function App() {
 
   if (userData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#181c2b]">
+      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
         <Container>
           {/*
             <div className="w-full flex flex-col items-center justify-center">
