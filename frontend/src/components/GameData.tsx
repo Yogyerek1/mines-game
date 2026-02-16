@@ -26,7 +26,7 @@ export function GameData() {
 
   return (
     <>
-      <div className="h-full w-full bg-black border-2 rounded-4xl border-green-400 flex flex-col p-6 items-center">
+      <div className="h-full w-full bg-transparent border-2 rounded-4xl border-green-400 flex flex-col p-6 items-center">
         <h1 className="text-orange-400 font-bold text-2xl mt-2 mb-12">
           BALANCE: $10,500
         </h1>
