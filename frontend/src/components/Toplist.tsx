@@ -58,3 +58,5 @@ export function Toplist({ myUser }: ToplistProps) {
     </div>
   );
 }
+
+// Written by YogyerekDEV

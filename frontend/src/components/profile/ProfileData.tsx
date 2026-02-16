@@ -16,3 +16,5 @@ export function ProfileData({ profileURL, username, score }: UserData) {
     </div>
   );
 }
+
+// Written by YogyerekDEV
