@@ -52,13 +52,13 @@ export function GameData() {
             max={maxBombs}
             value={bombs}
             onChange={handleBombChange}
-            className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer mb-8"
+            className="w-full h-2 bg-gray-700 rounded-lg cursor-pointer mb-8"
           />
 
-          <button className="text-black bg-green-700 border-0 rounded-full py-1 px-6 font-bold text-xl mb-4" onClick={handleStartGame}>
+          <button className="text-black bg-green-700 border-0 rounded-full py-1 px-6 font-bold text-xl mb-4 hover:scale-95 transition duration-100" onClick={handleStartGame}>
             START GAME
           </button>
-          <button className="text-black bg-orange-500 border-0 rounded-full py-1 px-6 font-bold text-xl" onClick={handleCashOut}>
+          <button className="text-black bg-orange-500 border-0 rounded-full py-1 px-6 font-bold text-xl hover:scale-95 transition duration-100" onClick={handleCashOut}>
             CASH OUT
           </button>
         </div>
