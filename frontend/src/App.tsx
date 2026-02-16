@@ -7,6 +7,8 @@ import { ProfileSetup } from "./components/ProfileSetup";
 import { type UserData } from "./types/types";
 import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
+import { Game } from "./components/Game";
+import { GameData } from "./components/GameData";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -108,6 +110,9 @@ function App() {
           <div className="h-100 w-100">
             <Toplist myUser={userData} />
           </div>
+          <div className="h-96 w-96"><GameData></GameData></div>
+          <div className="h-96 w-96"><Game></Game></div>
+          <div className="h-96 w-96 bg-green-500">Toplist...</div>
         </Container>
       </div>
     );
