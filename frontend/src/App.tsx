@@ -85,7 +85,7 @@ function App() {
 
   if (userData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#181c2b]">
+      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
         <Container>
           {/*
             <div className="w-full flex flex-col items-center justify-center">
@@ -105,9 +105,15 @@ function App() {
               </Button>
             </div>
           */}
-          <div className="h-96 w-96"><GameData></GameData></div>
-          <div className="h-96 w-96"><Game></Game></div>
-          <div className="h-96 w-96"><Toplist myUser={userData} /></div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <GameData></GameData>
+          </div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <Game></Game>
+          </div>
+          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+            <Toplist myUser={userData} />
+          </div>
         </Container>
       </div>
     );
