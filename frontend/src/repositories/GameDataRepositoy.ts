@@ -20,6 +20,14 @@ export class GameDataRepository {
         return this.gameData.betAmount;
     }
 
+    public set setBombs(bombs: number) {
+        this.gameData.bombs = bombs;
+    }
+
+    public set setBetAmount(bet: number) {
+        this.gameData.betAmount = bet;
+    }
+
     public set setGameData(updatedGameData: GameDataModel) {
         if (updatedGameData.betAmount != null) this.gameData.betAmount = updatedGameData.betAmount;
         if (updatedGameData.bombs != null) this.gameData.bombs = updatedGameData.bombs;
