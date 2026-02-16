@@ -1,4 +1,4 @@
-export class GameData {
+export class GameDataModel {
     betAmount: number;
     bombs: number;
 
