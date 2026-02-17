@@ -17,7 +17,7 @@ export function GameData() {
   };
 
   const handleStartGame = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("Starting game ...");
+    gameDataService.generateCards(bombs, maxBombs + 1);
   };
 
   const handleCashOut = (e: React.MouseEvent<HTMLButtonElement>) => {

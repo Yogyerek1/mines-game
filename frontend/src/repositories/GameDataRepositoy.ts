@@ -1,5 +1,7 @@
 import { GameDataModel } from "../models/GameData";
 import { betAmountDefault, bombsCountDefault } from "../config";
+import {CardModel} from "../models/CardModel";
+import { CardType } from "../models/CardType";
 
 export class GameDataRepository {
     private gameData: GameDataModel;
@@ -36,5 +38,31 @@ export class GameDataRepository {
     public setDefaultGameData(): GameDataModel {
         this.gameData = new GameDataModel(betAmountDefault, bombsCountDefault);
         return this.gameData;
+    }
+
+    public generateCards(bombCount: number, cardCount: number): CardModel[] {
+        let cards: CardModel[] = [];
+
+        for(let i = 0; i < cardCount; i++) {
+            cards.push(new CardModel(CardType.Safe));
+        }
+
+        let bombIndexes: number[] = [];
+        for(let i = 0; i < bombCount; i++) {
+            let index: number = Math.floor(Math.random() * 16);
+
+            while(bombIndexes.includes(index)) {
+                index = Math.floor(Math.random() * 16);
+            }
+            
+            bombIndexes.push(index);
+        }
+
+        for (let i = 0; i < bombIndexes.length; i++) {
+            cards[bombIndexes[i]].CardType = CardType.Bomb;
+        }
+
+        console.log(cards);
+        return cards;
     }
 }
