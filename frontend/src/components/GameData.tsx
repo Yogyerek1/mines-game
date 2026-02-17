@@ -2,12 +2,14 @@ import { GameDataRepository } from "../repositories/GameDataRepositoy";
 import { minBombs, maxBombs } from "../config";
 import { useState } from "react";
 import type { CardModel } from "../models/CardModel";
+import type { UserData } from "../types/types";
 
 type GameDataParams = {
+  userData: UserData;
   onGameStart: (cards: CardModel[]) => void;
 };
 
-export function GameData({onGameStart}: GameDataParams) {
+export function GameData({ onGameStart, userData }: GameDataParams) {
   const gameDataService: GameDataRepository = new GameDataRepository();
 
   const [bombs, setBombs] = useState(gameDataService.getBombs);
@@ -34,7 +36,7 @@ export function GameData({onGameStart}: GameDataParams) {
     <>
       <div className="h-full w-full bg-transparent border-2 rounded-4xl border-green-400 flex flex-col p-6 items-center">
         <h1 className="text-orange-400 font-bold text-2xl mt-2 mb-12">
-          BALANCE: $10,500
+          BALANCE: ${userData.score}
         </h1>
 
         <div className="w-full max-w-sm flex flex-col items-center">
@@ -61,10 +63,16 @@ export function GameData({onGameStart}: GameDataParams) {
             className="w-full h-2 bg-gray-700 rounded-lg cursor-pointer mb-8"
           />
 
-          <button className="text-black bg-green-700 border-0 rounded-full py-1 px-6 font-bold text-xl mb-4 hover:scale-95 transition duration-100" onClick={handleStartGame}>
+          <button
+            className="text-black bg-green-700 border-0 rounded-full py-1 px-6 font-bold text-xl mb-4 hover:scale-95 transition duration-100"
+            onClick={handleStartGame}
+          >
             START GAME
           </button>
-          <button className="text-black bg-orange-500 border-0 rounded-full py-1 px-6 font-bold text-xl hover:scale-95 transition duration-100" onClick={handleCashOut}>
+          <button
+            className="text-black bg-orange-500 border-0 rounded-full py-1 px-6 font-bold text-xl hover:scale-95 transition duration-100"
+            onClick={handleCashOut}
+          >
             CASH OUT
           </button>
         </div>

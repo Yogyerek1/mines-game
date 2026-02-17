@@ -109,13 +109,20 @@ function App() {
             </div>
           */}
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <GameData onGameStart={(cards) => {
-              setGameCards(cards);
-              setIsGameActive(true);
-            }}></GameData>
+            <GameData
+              userData={userData}
+              onGameStart={(cards) => {
+                setGameCards(cards);
+                setIsGameActive(true);
+              }}
+            ></GameData>
           </div>
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Game gameCards={gameCards} setGameCards={setGameCards} isGameActive={isGameActive}></Game>
+            <Game
+              gameCards={gameCards}
+              setGameCards={setGameCards}
+              isGameActive={isGameActive}
+            ></Game>
           </div>
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
             <Toplist myUser={userData} />
