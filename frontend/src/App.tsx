@@ -86,8 +86,12 @@ function App() {
 
   if (userData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
-        <GameHeader />
+      <div className="min-h-screen items-center justify-center bg-[#181c2b] overflow-hidden">
+        <GameHeader myUser={{
+          username: userData.username,
+          score: userData.score,
+          profileURL: userData.profileURL
+        }} />
           <Container>
             {/*
               <div className="w-full flex flex-col items-center justify-center">
