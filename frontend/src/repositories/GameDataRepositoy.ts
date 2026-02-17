@@ -62,7 +62,6 @@ export class GameDataRepository {
             cards[bombIndexes[i]].CardType = CardType.Bomb;
         }
 
-        console.log(cards);
         return cards;
     }
 }
