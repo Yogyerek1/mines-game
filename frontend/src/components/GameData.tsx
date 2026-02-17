@@ -6,7 +6,7 @@ import type { UserData } from "../types/types";
 
 type GameDataParams = {
   userData: UserData;
-  onGameStart: (cards: CardModel[]) => void;
+  onGameStart: (cards: CardModel[], bet: number, bombs: number) => void;
 };
 
 export function GameData({ onGameStart, userData }: GameDataParams) {
@@ -24,8 +24,12 @@ export function GameData({ onGameStart, userData }: GameDataParams) {
   };
 
   const handleStartGame = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (betAmount > userData.score) {
+      alert("Nincs elég pénzed!");
+      return;
+    }
     const generatedCards = gameDataService.generateCards(bombs, maxBombs + 1);
-    onGameStart(generatedCards);
+    onGameStart(generatedCards, betAmount, bombs);
   };
 
   const handleCashOut = (e: React.MouseEvent<HTMLButtonElement>) => {

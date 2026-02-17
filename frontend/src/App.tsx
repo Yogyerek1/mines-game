@@ -17,6 +17,8 @@ function App() {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [gameCards, setGameCards] = useState<CardModel[]>([]);
   const [isGameActive, setIsGameActive] = useState<boolean>(false);
+  const [bet, setBet] = useState<number>(0);
+  const [bombCount, setBombCount] = useState<number>(0);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -111,9 +113,12 @@ function App() {
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
             <GameData
               userData={userData}
-              onGameStart={(cards) => {
+              onGameStart={(cards, bet, bombs) => {
                 setGameCards(cards);
                 setIsGameActive(true);
+                setBet(bet);
+                setBombCount(bombs);
+                setUserData({ ...userData, score: userData.score - bet });
               }}
             ></GameData>
           </div>
@@ -122,6 +127,8 @@ function App() {
               gameCards={gameCards}
               setGameCards={setGameCards}
               isGameActive={isGameActive}
+              bet={bet}
+              bombCount={bombCount}
             ></Game>
           </div>
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
