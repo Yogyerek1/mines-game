@@ -1,8 +1,13 @@
 import { GameDataRepository } from "../repositories/GameDataRepositoy";
 import { minBombs, maxBombs } from "../config";
 import { useState } from "react";
+import type { CardModel } from "../models/CardModel";
 
-export function GameData() {
+type GameDataParams = {
+  onGameStart: (cards: CardModel[]) => void;
+};
+
+export function GameData({onGameStart}: GameDataParams) {
   const gameDataService: GameDataRepository = new GameDataRepository();
 
   const [bombs, setBombs] = useState(gameDataService.getBombs);
@@ -17,7 +22,8 @@ export function GameData() {
   };
 
   const handleStartGame = (e: React.MouseEvent<HTMLButtonElement>) => {
-    gameDataService.generateCards(bombs, maxBombs + 1);
+    const generatedCards = gameDataService.generateCards(bombs, maxBombs + 1);
+    onGameStart(generatedCards);
   };
 
   const handleCashOut = (e: React.MouseEvent<HTMLButtonElement>) => {
