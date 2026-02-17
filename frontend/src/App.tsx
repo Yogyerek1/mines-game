@@ -9,11 +9,13 @@ import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
+import type { CardModel } from "./models/CardModel";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [gameCards, setGameCards] = useState<CardModel[]>([]);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -106,10 +108,10 @@ function App() {
             </div>
           */}
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <GameData></GameData>
+            <GameData onGameStart={setGameCards}></GameData>
           </div>
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Game></Game>
+            <Game gameCards={gameCards} setGameCards={setGameCards}></Game>
           </div>
           <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
             <Toplist myUser={userData} />
