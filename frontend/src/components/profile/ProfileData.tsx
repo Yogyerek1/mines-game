@@ -1,7 +1,11 @@
 import { type UserData } from "../../types/types";
 import { ProfileIMG } from "./ProfileIMG";
 
-export function ProfileData({ profileURL, username, score }: UserData) {
+type ProfileDataProps = {
+  scoreEnabled ?: boolean;
+} & UserData;
+
+export function ProfileData({ profileURL, username, score, scoreEnabled=true }: ProfileDataProps) {
   return (
     <div className="flex items-center justify-between w-full px-4 py-2 gap-3">
       <ProfileIMG
@@ -12,7 +16,7 @@ export function ProfileData({ profileURL, username, score }: UserData) {
         border="border border-emerald-600"
       />
       <span className="flex-1 text-white text-center">{username}</span>
-      <span className="text-green-400 font-semibold">${score}</span>
+      {scoreEnabled && <span className="text-green-400 font-semibold">${score}</span>}
     </div>
   );
 }
