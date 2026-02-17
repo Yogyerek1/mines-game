@@ -9,6 +9,7 @@ import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
+import { GameHeader } from "./components/GameHeader";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -85,36 +86,41 @@ function App() {
 
   if (userData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
-        <Container>
-          {/*
-            <div className="w-full flex flex-col items-center justify-center">
-              <ProfileIMG
-                src={userData.profileURL}
-                width="w-35"
-                height="h-35"
-                round="rounded-lg"
-                className="mx-auto mb-5"
-              />
-              <h1>Hello, {userData.username}!</h1>
-              <br />
-              <p>Score: {userData.score}</p>
-              <br />
-              <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
-                Edit
-              </Button>
+      <div className="min-h-screen items-center justify-center bg-[#181c2b] overflow-hidden">
+        <GameHeader myUser={{
+          username: userData.username,
+          score: userData.score,
+          profileURL: userData.profileURL
+        }} />
+          <Container>
+            {/*
+              <div className="w-full flex flex-col items-center justify-center">
+                <ProfileIMG
+                  src={userData.profileURL}
+                  width="w-35"
+                  height="h-35"
+                  round="rounded-lg"
+                  className="mx-auto mb-5"
+                />
+                <h1>Hello, {userData.username}!</h1>
+                <br />
+                <p>Score: {userData.score}</p>
+                <br />
+                <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
+                  Edit
+                </Button>
+              </div>
+            */}
+            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+              <GameData></GameData>
             </div>
-          */}
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <GameData></GameData>
-          </div>
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Game></Game>
-          </div>
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Toplist myUser={userData} />
-          </div>
-        </Container>
+            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+              <Game></Game>
+            </div>
+            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+              <Toplist myUser={userData} />
+            </div>
+          </Container>
       </div>
     );
   }
