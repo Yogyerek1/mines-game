@@ -2,12 +2,10 @@ import { ProfileData } from "./profile/ProfileData";
 import { type UserData } from "../types/types";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
+import { useUser } from "../contexts/UserContext";
 
-type ToplistProps = {
-  myUser: UserData;
-};
-
-export function Toplist({ myUser }: ToplistProps) {
+export function Toplist() {
+  const { userData } = useUser();
   const [topList, setTopList] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -29,6 +27,7 @@ export function Toplist({ myUser }: ToplistProps) {
   }, []);
 
   if (loading) return <div>Loading toplist...</div>;
+  if (!userData) return null;
 
   return (
     <div className="bg-[#181c23] border border-[#23283a] rounded-2xl w-full py-4 shadow-lg">
@@ -50,9 +49,9 @@ export function Toplist({ myUser }: ToplistProps) {
         <div className="h-1 bg-green-400 rounded-full"></div>
         <div className="text-green-400 text-center mt-1">You</div>
         <ProfileData
-          profileURL={myUser.profileURL ?? ""}
-          username={myUser.username ?? ""}
-          score={myUser.score ?? 0}
+          profileURL={userData.profileURL ?? ""}
+          username={userData.username ?? ""}
+          score={userData.score ?? 0}
         />
       </div>
     </div>

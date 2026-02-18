@@ -3,17 +3,14 @@ import { minBombs, maxBombs } from "../config";
 import { useState } from "react";
 import type { CardModel } from "../models/CardModel";
 import type { UserData } from "../types/types";
+import { useUser } from "../contexts/UserContext";
+import { useGame } from "../contexts/GameContext";
 
-type GameDataParams = {
-  userData: UserData;
-  onGameStart: (cards: CardModel[], bet: number, bombs: number) => void;
-};
-
-export function GameData({ onGameStart, userData }: GameDataParams) {
+export function GameData() {
+  const { bombs, setBombs, setBetAmount, betAmount, setGameCards, setIsGameActive } = useGame();
+  const { userData } = useUser()
+  
   const gameDataService: GameDataRepository = new GameDataRepository();
-
-  const [bombs, setBombs] = useState(gameDataService.getBombs);
-  const [betAmount, setBetAmount] = useState(gameDataService.getBetAmount);
 
   const handleBombChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBombs(Number(e.target.value));
@@ -24,12 +21,13 @@ export function GameData({ onGameStart, userData }: GameDataParams) {
   };
 
   const handleStartGame = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (betAmount > userData.score) {
-      alert("Nincs elég pénzed!");
+    if (betAmount > (userData?.score ?? 0)) {
+      alert("You not have enough money!");
       return;
     }
     const generatedCards = gameDataService.generateCards(bombs, maxBombs + 1);
-    onGameStart(generatedCards, betAmount, bombs);
+    setGameCards(generatedCards);
+    setIsGameActive(true);
   };
 
   const handleCashOut = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,7 +38,7 @@ export function GameData({ onGameStart, userData }: GameDataParams) {
     <>
       <div className="h-full w-full bg-transparent border-2 rounded-4xl border-green-400 flex flex-col p-6 items-center">
         <h1 className="text-orange-400 font-bold text-2xl mt-2 mb-12">
-          BALANCE: ${userData.score}
+          BALANCE: ${userData?.score}
         </h1>
 
         <div className="w-full max-w-sm flex flex-col items-center">

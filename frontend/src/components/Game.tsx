@@ -3,27 +3,16 @@ import { Card } from "./Card";
 import { CardModel } from "../models/CardModel";
 import { CardType } from "../models/CardType";
 import { maxBombs } from "../config";
+import { useGame } from "../contexts/GameContext";
 
-type GameProps = {
-  gameCards: CardModel[];
-  setGameCards: (cards: CardModel[]) => void;
-  isGameActive: boolean;
-  bet: number;
-  bombCount: number;
-};
+export function Game() {
+  const { gameCards, setGameCards, isGameActive, betAmount, bombs} = useGame();
 
-export function Game({
-  gameCards,
-  setGameCards,
-  isGameActive,
-  bet,
-  bombCount,
-}: GameProps) {
-  const [money, setMoney] = useState<number>(bet);
+  const [money, setMoney] = useState<number>(betAmount);
 
   useEffect(() => {
-    setMoney(bet);
-  }, [bet]);
+    setMoney(betAmount);
+  }, [betAmount]);
 
   const displayCards = useMemo(() => {
     if (isGameActive) {
@@ -32,6 +21,7 @@ export function Game({
       return Array.from({ length: 16 }, () => new CardModel(CardType.Safe));
     }
   }, [isGameActive, gameCards]);
+
   const handleCardClick = (index: number) => {
     const updatedCards = [...gameCards];
     updatedCards[index].Revealed = true;
@@ -41,7 +31,7 @@ export function Game({
       gameCards[index].CardType === CardType.Safe &&
       gameCards[index].Revealed
     ) {
-      setMoney(money * calculateMultiplier(bombCount));
+      setMoney(money * calculateMultiplier(bombs));
       console.log(money);
     }
   };
@@ -62,7 +52,7 @@ export function Game({
         ))}
       </div>
       <span className="font-bold text-center text-gray-200 m-12">
-        Current Multiplier: {calculateMultiplier(bombCount).toFixed(2)}x
+        Current Multiplier: {calculateMultiplier(bombs).toFixed(2)}x
       </span>
     </div>
   );

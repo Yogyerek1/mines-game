@@ -9,7 +9,6 @@ import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
-import type { CardModel } from "./models/CardModel";
 import { UserProvider } from "./contexts/UserContext";
 import { GameProvider } from "./contexts/GameContext";
 
@@ -17,10 +16,6 @@ function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [gameCards, setGameCards] = useState<CardModel[]>([]);
-  const [isGameActive, setIsGameActive] = useState<boolean>(false);
-  const [bet, setBet] = useState<number>(0);
-  const [bombCount, setBombCount] = useState<number>(0);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -60,7 +55,7 @@ function App() {
 
       if (data.success) {
         console.log("Username updated:", data);
-        setUserData({ ...userData, username, profileURL });
+        setUserData((prev) => ({ ...prev, username, profileURL }));
       } else {
         console.error("Update failed", data.message);
       }
@@ -73,7 +68,7 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  if (!userData?.username) {
+  if (!userData?.username || editMode) {
     return <ProfileSetup onSetData={handleSetData} />;
   }
 
@@ -84,8 +79,8 @@ function App() {
           handleSetData(username, profileURL);
           setEditMode(false);
         }}
-        initialUsername={userData.username}
-        initialProfileURL={userData.profileURL}
+        initialUsername={userData?.username}
+        initialProfileURL={userData?.profileURL}
       />
     );
   }
@@ -112,7 +107,7 @@ function App() {
               </Button>
             </div>
           */}
-          <UserProvider>
+          <UserProvider initialUserData={userData}>
             <GameProvider>
               <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
                 <GameData></GameData>
