@@ -10,6 +10,8 @@ import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
 import type { CardModel } from "./models/CardModel";
+import { UserProvider } from "./contexts/UserContext";
+import { GameProvider } from "./contexts/GameContext";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -110,30 +112,19 @@ function App() {
               </Button>
             </div>
           */}
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <GameData
-              userData={userData}
-              onGameStart={(cards, bet, bombs) => {
-                setGameCards(cards);
-                setIsGameActive(true);
-                setBet(bet);
-                setBombCount(bombs);
-                setUserData({ ...userData, score: userData.score - bet });
-              }}
-            ></GameData>
-          </div>
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Game
-              gameCards={gameCards}
-              setGameCards={setGameCards}
-              isGameActive={isGameActive}
-              bet={bet}
-              bombCount={bombCount}
-            ></Game>
-          </div>
-          <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-            <Toplist myUser={userData} />
-          </div>
+          <UserProvider>
+            <GameProvider>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <GameData></GameData>
+              </div>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <Game></Game>
+              </div>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <Toplist />
+              </div>
+            </GameProvider>
+          </UserProvider>
         </Container>
       </div>
     );
