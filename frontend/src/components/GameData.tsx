@@ -1,15 +1,22 @@
 import { GameDataRepository } from "../repositories/GameDataRepositoy";
 import { minBombs, maxBombs } from "../config";
-import { useState } from "react";
-import type { CardModel } from "../models/CardModel";
-import type { UserData } from "../types/types";
+//import { useState } from "react";
+//import type { CardModel } from "../models/CardModel";
+//import type { UserData } from "../types/types";
 import { useUser } from "../contexts/UserContext";
 import { useGame } from "../contexts/GameContext";
 
 export function GameData() {
-  const { bombs, setBombs, setBetAmount, betAmount, setGameCards, setIsGameActive } = useGame();
-  const { userData } = useUser()
-  
+  const {
+    bombs,
+    setBombs,
+    setBetAmount,
+    betAmount,
+    setGameCards,
+    setIsGameActive,
+  } = useGame();
+  const { userData } = useUser();
+
   const gameDataService: GameDataRepository = new GameDataRepository();
 
   const handleBombChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +29,7 @@ export function GameData() {
 
   const handleStartGame = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (betAmount > (userData?.score ?? 0)) {
-      alert("You not have enough money!");
+      alert(`You not have enough money! ${e}`);
       return;
     }
     const generatedCards = gameDataService.generateCards(bombs, maxBombs + 1);
@@ -31,7 +38,7 @@ export function GameData() {
   };
 
   const handleCashOut = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("Cashing out ...");
+    console.log("Cashing out ...", e);
   };
 
   return (
