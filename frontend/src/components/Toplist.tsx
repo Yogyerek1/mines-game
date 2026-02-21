@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext";
 
 export function Toplist() {
-  const { userData } = useUser();
+  const { userData, refreshTrigger } = useUser();
   const [topList, setTopList] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -24,7 +24,7 @@ export function Toplist() {
       setLoading(false);
     };
     fetchTopList();
-  }, []);
+  }, [refreshTrigger]);
 
   if (loading) return <div>Loading toplist...</div>;
   if (!userData) return null;

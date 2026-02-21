@@ -12,7 +12,9 @@ export function ProfileData({ profileURL, username, score }: UserData) {
         border="border border-emerald-600"
       />
       <span className="flex-1 text-white text-center">{username}</span>
-      <span className="text-green-400 font-semibold">${score}</span>
+      <span className="text-green-400 font-semibold">
+        ${score?.toFixed(2) ?? "0.00"}
+      </span>
     </div>
   );
 }

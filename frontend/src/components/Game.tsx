@@ -1,38 +1,81 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { Card } from "./Card";
 import { CardModel } from "../models/CardModel";
 import { CardType } from "../models/CardType";
-import { maxBombs } from "../config";
+import { maxBombs, BACKEND_URL } from "../config";
 import { useGame } from "../contexts/GameContext";
+import { useUser } from "../contexts/UserContext";
 
 export function Game() {
-  const { gameCards, setGameCards, isGameActive, betAmount, bombs} = useGame();
+  const {
+    gameCards,
+    setGameCards,
+    isGameActive,
+    bombs,
+    currentWin,
+    setCurrentWin,
+    revealAllAndReset,
+  } = useGame();
+  const { userData, triggerToplistRefresh, updateUserScore } = useUser();
 
-  const [money, setMoney] = useState<number>(betAmount);
+  const saveScoreToBackend = async (score: number) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/users/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ score }),
+      });
 
-  useEffect(() => {
-    setMoney(betAmount);
-  }, [betAmount]);
+      if (response.ok) {
+        console.log("Score saved successfully");
+      }
+    } catch (error) {
+      console.error("Failed to save score:", error);
+    }
+  };
 
   const displayCards = useMemo(() => {
-    if (isGameActive) {
+    if (gameCards.length > 0) {
       return gameCards;
     } else {
       return Array.from({ length: 16 }, () => new CardModel(CardType.Safe));
     }
-  }, [isGameActive, gameCards]);
+  }, [gameCards]);
 
   const handleCardClick = (index: number) => {
+    if (gameCards[index].Revealed) return;
+
     const updatedCards = [...gameCards];
     updatedCards[index].Revealed = true;
     setGameCards(updatedCards);
 
-    if (
-      gameCards[index].CardType === CardType.Safe &&
-      gameCards[index].Revealed
-    ) {
-      setMoney(money * calculateMultiplier(bombs));
-      console.log(money);
+    if (gameCards[index].CardType === CardType.Safe) {
+      const newWin = currentWin * calculateMultiplier(bombs);
+      setCurrentWin(newWin);
+
+      const totalSafeCards = maxBombs + 1 - bombs;
+      const revealedSafeCards = updatedCards.filter(
+        (card) => card.Revealed && card.CardType === CardType.Safe,
+      ).length;
+
+      if (revealedSafeCards === totalSafeCards) {
+        const finalScore = (userData?.score ?? 0) + newWin;
+        updateUserScore(finalScore);
+        saveScoreToBackend(finalScore);
+        triggerToplistRefresh();
+
+        revealAllAndReset();
+        setCurrentWin(0);
+      }
+    } else if (gameCards[index].CardType === CardType.Bomb) {
+      saveScoreToBackend(userData?.score ?? 0);
+      triggerToplistRefresh();
+
+      revealAllAndReset();
+      setCurrentWin(0);
     }
   };
 
@@ -51,9 +94,14 @@ export function Game() {
           />
         ))}
       </div>
-      <span className="font-bold text-center text-gray-200 m-12">
-        Current Multiplier: {calculateMultiplier(bombs).toFixed(2)}x
-      </span>
+      <div className="flex flex-col items-center">
+        <span className="font-bold text-center text-gray-200 m-2">
+          Current Multiplier: {calculateMultiplier(bombs).toFixed(2)}x
+        </span>
+        <span className="font-bold text-center text-green-400 m-2">
+          Potential Win: ${currentWin.toFixed(2)}
+        </span>
+      </div>
     </div>
   );
 }
