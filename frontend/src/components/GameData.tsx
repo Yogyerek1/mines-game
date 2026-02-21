@@ -43,7 +43,7 @@ export function GameData() {
       alert(`You not have enough money! ${e}`);
       return;
     }
-
+    
     const newScore = (userData?.score ?? 0) - betAmount;
     updateUserScore(newScore);
 

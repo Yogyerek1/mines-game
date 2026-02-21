@@ -46,6 +46,8 @@ export function Game() {
   }, [gameCards]);
 
   const handleCardClick = (index: number) => {
+    if (!isGameActive) return;
+
     if (gameCards[index].Revealed) return;
 
     const updatedCards = [...gameCards];
@@ -61,7 +63,7 @@ export function Game() {
         (card) => card.Revealed && card.CardType === CardType.Safe,
       ).length;
 
-      if (revealedSafeCards === totalSafeCards) {
+      if (revealedSafeCards === totalSafeCards && isGameActive) {
         const finalScore = (userData?.score ?? 0) + newWin;
         updateUserScore(finalScore);
         saveScoreToBackend(finalScore);
@@ -70,7 +72,7 @@ export function Game() {
         revealAllAndReset();
         setCurrentWin(0);
       }
-    } else if (gameCards[index].CardType === CardType.Bomb) {
+    } else if (gameCards[index].CardType === CardType.Bomb && isGameActive) {
       saveScoreToBackend(userData?.score ?? 0);
       triggerToplistRefresh();
 
