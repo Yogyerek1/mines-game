@@ -2,14 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BACKEND_URL } from "./config";
 import { ProfileSetup } from "./components/ProfileSetup";
-//import { ProfileIMG } from "./components/profile/ProfileIMG";
-//import { Button } from "./components/ui-interactive/Button";
 import { type UserData } from "./types/types";
 import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
-import { GameHeader } from "./components/GameHeader";
+import { UserProvider } from "./contexts/UserContext";
+import { GameProvider } from "./contexts/GameContext";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -41,20 +40,43 @@ function App() {
 
   const handleSetData = async (username: string, profileURL: string) => {
     try {
+      const isFirstTimeSetup = !userData?.username;
+      const requestBody: {
+        username: string;
+        profileURL: string;
+        score?: number;
+      } = {
+        username,
+        profileURL,
+      };
+
+      if (isFirstTimeSetup) {
+        requestBody.score = 15000;
+      }
+
       const response = await fetch(`${BACKEND_URL}/users/update`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, profileURL }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (data.success) {
         console.log("Username updated:", data);
-        setUserData({ ...userData, username, profileURL });
+        if (isFirstTimeSetup) {
+          setUserData((prev) => ({
+            ...prev,
+            username,
+            profileURL,
+            score: 15000,
+          }));
+        } else {
+          setUserData((prev) => ({ ...prev, username, profileURL }));
+        }
       } else {
         console.error("Update failed", data.message);
       }
@@ -67,7 +89,7 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  if (!userData?.username) {
+  if (!userData?.username || editMode) {
     return <ProfileSetup onSetData={handleSetData} />;
   }
 
@@ -78,49 +100,30 @@ function App() {
           handleSetData(username, profileURL);
           setEditMode(false);
         }}
-        initialUsername={userData.username}
-        initialProfileURL={userData.profileURL}
+        initialUsername={userData?.username}
+        initialProfileURL={userData?.profileURL}
       />
     );
   }
 
   if (userData) {
     return (
-      <div className="min-h-screen items-center justify-center bg-[#181c2b] overflow-hidden">
-        <GameHeader myUser={{
-          username: userData.username,
-          score: userData.score,
-          profileURL: userData.profileURL
-        }} />
-          <Container>
-            {/*
-              <div className="w-full flex flex-col items-center justify-center">
-                <ProfileIMG
-                  src={userData.profileURL}
-                  width="w-35"
-                  height="h-35"
-                  round="rounded-lg"
-                  className="mx-auto mb-5"
-                />
-                <h1>Hello, {userData.username}!</h1>
-                <br />
-                <p>Score: {userData.score}</p>
-                <br />
-                <Button width="w-35" height="h-10" onClick={() => setEditMode(true)}>
-                  Edit
-                </Button>
+      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
+        <Container>
+          <UserProvider initialUserData={userData}>
+            <GameProvider>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <GameData></GameData>
               </div>
-            */}
-            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-              <GameData></GameData>
-            </div>
-            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-              <Game></Game>
-            </div>
-            <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-              <Toplist myUser={userData} />
-            </div>
-          </Container>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <Game></Game>
+              </div>
+              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                <Toplist />
+              </div>
+            </GameProvider>
+          </UserProvider>
+        </Container>
       </div>
     );
   }
