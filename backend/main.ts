@@ -17,6 +17,10 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello world!");
+});
+
 app.post("/users/init", (req: Request, res: Response) => {
     let accountID = req.cookies.accountID;
     const setCookieAndRespond = (id: string, userData?: { username?: string, score?: number, profileURL?: string }) => {
@@ -158,3 +162,5 @@ app.get("/toplist", (req: Request, res: Response) => {
 app.listen(port, () => {
     console.log(`App now listening on port ${port}.`);
 });
+
+export default app;

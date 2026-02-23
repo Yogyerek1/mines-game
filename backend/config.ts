@@ -1,1 +1,1 @@
-export const frontend_url: string = "http://localhost:5173";
+export const frontend_url: string = process.env.FRONTEND_URL || "http://localhost:5173";
