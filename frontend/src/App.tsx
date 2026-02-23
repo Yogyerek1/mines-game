@@ -7,7 +7,8 @@ import { Container } from "./components/Container";
 import { Toplist } from "./components/Toplist";
 import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
-import { GameHeader } from "./components/GameHeader";
+import { UserProvider } from "./contexts/UserContext";
+import { GameProvider } from "./contexts/GameContext";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);

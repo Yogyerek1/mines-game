@@ -1,7 +1,8 @@
-import QuestionMark from '../assets/QuestionMark.png'
-//import Diamond from '../assets/Diamond.png'
-//import Bomb from '../assets/Bomb.png'
-//import RedBomb from '../assets/RedBomb.png'
+import QuestionMark from "../assets/QuestionMark.png";
+import type { CardModel } from "../models/CardModel";
+import { CardType } from "../models/CardType";
+import Diamond from "../assets/Diamond.png";
+import Bomb from "../assets/Bomb.png";
 
 type CardProps = {
   card: CardModel;
