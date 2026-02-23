@@ -9,6 +9,7 @@ import { Game } from "./components/Game";
 import { GameData } from "./components/GameData";
 import { UserProvider } from "./contexts/UserContext";
 import { GameProvider } from "./contexts/GameContext";
+import { GameHeader } from "./components/GameHeader";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -108,22 +109,31 @@ function App() {
 
   if (userData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#181c2b] overflow-hidden">
-        <Container>
-          <UserProvider initialUserData={userData}>
-            <GameProvider>
-              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-                <GameData></GameData>
-              </div>
-              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-                <Game></Game>
-              </div>
-              <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-                <Toplist />
-              </div>
-            </GameProvider>
-          </UserProvider>
-        </Container>
+      <div className="min-h-screen flex flex-col bg-[#181c2b] overflow-hidden">
+        <GameHeader
+          myUser={{
+            username: userData.username,
+            score: userData.score,
+            profileURL: userData.profileURL,
+          }}
+        />
+        <div className="flex-1 flex items-center justify-center">
+          <Container>
+            <UserProvider initialUserData={userData}>
+              <GameProvider>
+                <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                  <GameData></GameData>
+                </div>
+                <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                  <Game></Game>
+                </div>
+                <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+                  <Toplist />
+                </div>
+              </GameProvider>
+            </UserProvider>
+          </Container>
+        </div>
       </div>
     );
   }
