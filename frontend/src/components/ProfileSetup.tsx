@@ -24,7 +24,7 @@ export function ProfileSetup({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#181c2b]">
       <div className="scale-100 md:scale-125 lg:scale-150 flex flex-col items-center gap-4">
         <span className="font-bold text-amber-100 text-4xl">
           Set profile...
