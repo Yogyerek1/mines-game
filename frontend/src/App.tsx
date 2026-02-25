@@ -10,13 +10,58 @@ import { GameData } from "./components/GameData";
 import { UserProvider } from "./contexts/UserContext";
 import { GameProvider } from "./contexts/GameContext";
 import { GameHeader } from "./components/GameHeader";
-import { MoneyMake } from "./components/MoneyMake";
+import { MoneyMakeButton } from "./components/MoneyMakeButton";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const hasInitialized = useRef(false);
+  const { userData } = UserProvider();
+
+  const handleClickOnFreeMoney = async () => {
+    const updateBody: UserData = {
+      score: (userData?.score ?? 0) + 1000,
+    };
+    try {
+      const res = await fetch(`${BACKEND_URL}/users/update`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateBody),
+      })
+
+      if (!res.ok) {
+        console.log("Failed to update score");
+        return;
+      }
+
+      const data = await res.json();
+      if (data.success) {
+        setUserData(prev => (prev ? { ...prev, score: (prev?.score ?? 0) + 1000 } : prev))
+        await refreshUserData();
+      };
+    }
+    catch {
+      console.log("Could not connect to server");
+    }
+  }
+
+  const refreshUserData = async () => {
+    const res = await fetch(`${BACKEND_URL}/users/init`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    if (data.success) {
+      setUserData(data.user);
+    }
+  };
 
   useEffect(() => {
     if (hasInitialized.current) return; // skip if already called
@@ -135,7 +180,7 @@ function App() {
             </UserProvider>
           </Container>
         </div>
-        <MoneyMake></MoneyMake>
+        <MoneyMakeButton onClick={handleClickOnFreeMoney} />
       </div>
     );
   }
