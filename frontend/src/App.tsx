@@ -17,7 +17,18 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const hasInitialized = useRef(false);
-  const { userData } = UserProvider();
+
+  const refreshUserData = async () => {
+    const res = await fetch(`${BACKEND_URL}/users/init`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    if (data.success) {
+      setUserData(data.user);
+    }
+  };
 
   const handleClickOnFreeMoney = async () => {
     const updateBody: UserData = {
@@ -27,11 +38,9 @@ function App() {
       const res = await fetch(`${BACKEND_URL}/users/update`, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateBody),
-      })
+      });
 
       if (!res.ok) {
         console.log("Failed to update score");
@@ -40,44 +49,27 @@ function App() {
 
       const data = await res.json();
       if (data.success) {
-        setUserData(prev => (prev ? { ...prev, score: (prev?.score ?? 0) + 1000 } : prev))
         await refreshUserData();
-      };
-    }
-    catch {
+        window.location.reload();
+      }
+    } catch {
       console.log("Could not connect to server");
-    }
-  }
-
-  const refreshUserData = async () => {
-    const res = await fetch(`${BACKEND_URL}/users/init`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    if (data.success) {
-      setUserData(data.user);
     }
   };
 
   useEffect(() => {
-    if (hasInitialized.current) return; // skip if already called
-    hasInitialized.current = true; // mark as called
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
 
     fetch(`${BACKEND_URL}/users/init`, {
       method: "POST",
-      credentials: "include", // include cookies
-      headers: {
-        "Content-Type": "application/json",
-      },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
     })
-      .then((res) => res.json()) // parse the response body as json
+      .then((res) => res.json())
       .then((data) => {
-        setUserData(data); // set user data with the response
-        setLoading(false); // set loading false
+        setUserData(data);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Init error:", err);
@@ -88,11 +80,7 @@ function App() {
   const handleSetData = async (username: string, profileURL: string) => {
     try {
       const isFirstTimeSetup = !userData?.username;
-      const requestBody: {
-        username: string;
-        profileURL: string;
-        score?: number;
-      } = {
+      const requestBody: { username: string; profileURL: string; score?: number } = {
         username,
         profileURL,
       };
@@ -104,23 +92,15 @@ function App() {
       const response = await fetch(`${BACKEND_URL}/users/update`, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        console.log("Username updated:", data);
         if (isFirstTimeSetup) {
-          setUserData((prev) => ({
-            ...prev,
-            username,
-            profileURL,
-            score: 15000,
-          }));
+          setUserData((prev) => ({ ...prev, username, profileURL, score: 15000 }));
         } else {
           setUserData((prev) => ({ ...prev, username, profileURL }));
         }
@@ -132,9 +112,7 @@ function App() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   if (!userData?.username || editMode) {
     return <ProfileSetup onSetData={handleSetData} />;
@@ -165,13 +143,13 @@ function App() {
         />
         <div className="flex-1 flex items-center justify-center">
           <Container>
-            <UserProvider initialUserData={userData}>
+            <UserProvider key={userData.score} initialUserData={userData}>
               <GameProvider>
                 <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-                  <GameData></GameData>
+                  <GameData />
                 </div>
                 <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
-                  <Game></Game>
+                  <Game />
                 </div>
                 <div className="h-96 w-full max-w-sm md:max-w-md lg:max-w-xl mx-auto">
                   <Toplist />

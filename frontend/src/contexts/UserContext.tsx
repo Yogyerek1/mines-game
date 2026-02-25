@@ -11,7 +11,6 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useUser() {
   const ctx = useContext(UserContext);
   if (!ctx) throw new Error("useUser must be used within UserProvider");
@@ -40,15 +39,7 @@ export function UserProvider({
   };
 
   return (
-    <UserContext.Provider
-      value={{
-        userData,
-        setUserData,
-        updateUserScore,
-        refreshTrigger,
-        triggerToplistRefresh,
-      }}
-    >
+    <UserContext.Provider value={{ userData, setUserData, updateUserScore, refreshTrigger, triggerToplistRefresh }}>
       {children}
     </UserContext.Provider>
   );
