@@ -10,6 +10,7 @@ import { GameData } from "./components/GameData";
 import { UserProvider } from "./contexts/UserContext";
 import { GameProvider } from "./contexts/GameContext";
 import { GameHeader } from "./components/GameHeader";
+import { MoneyMake } from "./components/MoneyMake";
 
 function App() {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -134,6 +135,7 @@ function App() {
             </UserProvider>
           </Container>
         </div>
+        <MoneyMake></MoneyMake>
       </div>
     );
   }
