@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@vercel/node": "^5.6.6",
+    "@vercel/node": "^5.6.9",
     "nodemon": "^3.1.11"
   }
 }

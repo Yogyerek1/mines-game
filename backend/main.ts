@@ -6,11 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 import { UpdateRequestBodyType } from "./types/types";
 import { frontend_url } from "./config";
 
-const port = 8000;
+const port = 3001;
 const app: Express = express();
 
 app.use(cors({
-    origin: frontend_url,
+    origin: "https://minesgame.zenithfactory.dev",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
@@ -26,8 +27,8 @@ app.post("/users/init", (req: Request, res: Response) => {
     const setCookieAndRespond = (id: string, userData?: { username?: string, score?: number, profileURL?: string }) => {
         res.cookie("accountID", id, {
             httpOnly: true,
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+            secure: true,
             maxAge: 1000 * 60 * 60 * 24 * 7
         });
         if (userData) {
